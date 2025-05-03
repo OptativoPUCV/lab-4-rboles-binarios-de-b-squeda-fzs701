@@ -80,8 +80,8 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
     }
     TreeNode* new_Node = createTreeNode(key,value);
     new_Node->parent = parent;
-    if(parent = NULL){
-        tree->root = new_Node
+    if(parent == NULL){
+        tree->root = new_Node;
     } else if(tree->lower_than(key,parent->pair->key)){
         temp->left = new_Node;
     } else {
