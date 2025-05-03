@@ -170,15 +170,15 @@ Pair * nextTreeMap(TreeMap * tree) {
         return NULL;
     }
     TreeNode* temp = tree->current;
-    if (node->right != NULL){
-        node = minimun(node->right);
-        tree->current = node;
+    if (temp->right != NULL){
+        temp = minimun(temp->right);
+        tree->current = temp;
         return node->pair;
     }
 
-    TreeNode* current = node->parent;
-    while(current != NULL && current->right == node){
-        node = current;
+    TreeNode* current = temp->parent;
+    while(current != NULL && current->right == temp){
+        temp = current;
         current = current->parent;
     }
     tree->current = current;
