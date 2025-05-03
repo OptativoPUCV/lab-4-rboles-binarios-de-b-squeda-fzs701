@@ -190,13 +190,26 @@ Pair * nextTreeMap(TreeMap * tree) {
 
 
 
-
-/*Pair * searchTreeMap(TreeMap * tree, void* key) {
-    return NULL;
-}*/
-
-
 Pair * upperBound(TreeMap * tree, void* key) {
+    TreeNode* current = tree->root;
+    TreeNode* nodo = NULL;
+
+    while(current != NULL){
+        if(is_equal(tree,key,current->pair->key)){
+            tree->current = current;
+            return current->pair;
+        }
+        if (tree->lower_than(key,current->pair->key)){
+            node = current;
+            current = current->left;
+        } else {
+            current = current->right;
+        }
+    }
+    if(node != NULL){
+        tree->current = node;
+        return node->pair;
+    }
     return NULL;
 }
 
