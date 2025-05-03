@@ -143,3 +143,9 @@ treemap.c:90:9: error: 'TreeMap {aka struct TreeMap}' has no member named 'temp'
      tree->temp = new_Node;
          ^~
 27ac5ef
+Fri, May  2, 2025 10:56:45 PM: 
+ treemap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests:  13|5
+total_score: 25/70
+359c31f
