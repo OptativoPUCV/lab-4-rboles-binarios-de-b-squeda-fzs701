@@ -36,6 +36,8 @@ TreeNode * createTreeNode(void* key, void * value) {
     return new;
 }
 
+
+
 TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
     TreeMap* map = (TreeMap*)malloc(sizeof(TreeMap));
     if(map == NULL){
@@ -50,13 +52,16 @@ TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
 
 Pair * searchTreeMap(TreeMap * tree, void* key) {
     TreeNode* temp = tree->root;
-    while(temp != NULL){
+
+    while(temp != NULL){    
         if(is_equal(tree,key,temp->pair->key)){
-            tree->current = temp;
+            tree->current = temp;   //actualiza current si se encuentra la clave
             return temp->pair;
-        } else if (tree->lower_than(key,temp->pair->key)){
+
+        } else if (tree->lower_than(key,temp->pair->key)){ //busca en izda o dcha segun comparacion
             temp = temp->left;
-        }else {
+
+        } else {
             temp = temp->right;
         }
     }
@@ -66,11 +71,13 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
 
 void insertTreeMap(TreeMap * tree, void* key, void * value) {
     if (searchTreeMap(tree,key) != NULL) {
-        return;
+        return;     //evitamos claves duplicadas
     }
+
     TreeNode* parent = NULL;
     TreeNode* temp = tree->root;
-    while(temp != NULL){
+
+    while(temp != NULL){ //encontrar donde insertar
         parent = temp;
         if(tree->lower_than(key,temp->pair->key)){
             temp = temp->left;
@@ -78,15 +85,18 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
             temp = temp->right;
         }
     }
-    TreeNode* new_Node = createTreeNode(key,value);
+
+    TreeNode* new_Node = createTreeNode(key,value); //se crea nuevo nodo
     new_Node->parent = parent;
-    if(parent == NULL){
+
+    if (parent == NULL){ //se inserta en raiz si esta vacio 
         tree->root = new_Node;
-    } else if(tree->lower_than(key,parent->pair->key)){
+    } else if(tree->lower_than(key,parent->pair->key)){ //se inserta izda o dcha segun comparacion
         parent->left = new_Node;
     } else {
         parent->right = new_Node;
     }
+
     tree->current = new_Node;
 
 }
@@ -103,20 +113,23 @@ TreeNode * minimum(TreeNode * x){
 
 
 void removeNode(TreeMap * tree, TreeNode* node) {
+    //caso1 : nodo sin hijos
     if(node->left == NULL && node->right == NULL){
         if(node->parent == NULL){
             tree->root = NULL;
-        }else {
+        } else {
             if (node->parent->left == node)
                 node->parent->left = NULL;
              else 
                 node->parent->right = NULL;
             
         }
+        free(node->pair);
         free(node);
         return;
     }
 
+    //caso2: nodo con un hijo
     if(node->left == NULL || node->right == NULL){
         TreeNode* child;
         if (node->left != NULL)
@@ -133,16 +146,18 @@ void removeNode(TreeMap * tree, TreeNode* node) {
         } else {
             tree->root = child;
         }
+
         child->parent = node->parent;
+        free(node->pair);
         free(node);
         return;
     }
+
+    //caso3: nodo con dos hijos
     TreeNode* minimo = minimum(node->right);
     node->pair->key = minimo->pair->key;
     node->pair->value = minimo->pair->value;
-    removeNode(tree,minimo);
-
-
+    removeNode(tree,minimo); //eliminar sucesor
 }
 
 void eraseTreeMap(TreeMap * tree, void* key){
@@ -169,13 +184,15 @@ Pair * nextTreeMap(TreeMap * tree) {
     if(tree == NULL || tree->current == NULL){
         return NULL;
     }
+
     TreeNode* node = tree->current;
+    //caso1: buscamos valor minimo subarbol derecho
     if (node->right != NULL){
         node = minimum(node->right);
         tree->current = node;
         return node->pair;
     }
-
+    //caso2: ir hacia arriba hasta encontrar padre con clave mayor
     TreeNode* parent = node->parent;
     while(parent != NULL && parent->right == node){
         node = parent;
@@ -196,17 +213,19 @@ Pair * upperBound(TreeMap * tree, void* key) {
 
     while(current != NULL){
         if(is_equal(tree,key,current->pair->key)){
-            tree->current = current;
+            tree->current = current; 
             return current->pair;
         }
+
         if (tree->lower_than(key,current->pair->key)){
-            node = current;
+            node = current; //posible upperBound pero seguimos buscando por la izda
             current = current->left;
         } else {
-            current = current->right;
+            current = current->right; //buscamos en la derecha
         }
     }
-    if(node != NULL){
+
+    if(node != NULL){ //retornamos el nodo si es que existe
         tree->current = node;
         return node->pair;
     }
