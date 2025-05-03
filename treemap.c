@@ -65,7 +65,17 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
 
 
 void insertTreeMap(TreeMap * tree, void* key, void * value) {
-
+    if (searchTreeMap(tree,key) == NULL) {
+        return;
+    }
+    TreeNode* temp = tree->root;
+    while(temp != NULL){
+        if(tree->lower_than(key,temp->pair->key)){
+            temp = temp->left;
+        } else {
+            temp = temp->right;
+        }
+    }
 }
 
 TreeNode * minimum(TreeNode * x){
