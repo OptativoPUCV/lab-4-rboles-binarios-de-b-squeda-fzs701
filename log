@@ -336,3 +336,21 @@ treemap.c:174:14: error: assignment makes pointer from integer without a cast [-
               ^
 cc1.exe: all warnings being treated as errors
 f0bafb9
+Fri, May  2, 2025 11:36:05 PM: 
+ treemap.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+Compilation failed
+In file included from test.c:4:0:
+treemap.c: In function 'nextTreeMap':
+treemap.c:174:16: error: implicit declaration of function 'minimun' [-Werror=implicit-function-declaration]
+         temp = minimun(temp->right);
+                ^~~~~~~
+treemap.c:174:14: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
+         temp = minimun(temp->right);
+              ^
+treemap.c:181:16: error: 'current' undeclared (first use in this function)
+         temp = current;
+                ^~~~~~~
+treemap.c:181:16: note: each undeclared identifier is reported only once for each function it appears in
+cc1.exe: all warnings being treated as errors
+c1cb59c
