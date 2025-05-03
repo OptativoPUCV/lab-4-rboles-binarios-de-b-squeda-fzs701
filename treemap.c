@@ -173,7 +173,7 @@ Pair * nextTreeMap(TreeMap * tree) {
     if (temp->right != NULL){
         temp = minimun(temp->right);
         tree->current = temp;
-        return node->pair;
+        return temp->pair;
     }
 
     TreeNode* current = temp->parent;
